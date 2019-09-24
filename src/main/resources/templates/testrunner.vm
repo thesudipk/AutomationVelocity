@@ -1,0 +1,14 @@
+package com.test.automation.steps;
+
+import org.junit.runner.RunWith;
+import cucumber.api.CucumberOptions;
+import cucumber.api.junit.Cucumber;
+
+@RunWith(Cucumber.class)
+@CucumberOptions(features={"src/test/resources/features"},
+glue={"com.test.automation.steps"},
+plugin={"pretty", "json:target/json/cucumber.json"},
+tags={"@test"}
+)
+
+public class TestRunner{}

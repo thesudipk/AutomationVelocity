@@ -1,0 +1,20 @@
+Feature: $tags API testing
+#foreach( $eachpath in $webservice)
+#foreach( $eachresponse in ${eachpath.responses})
+@test
+ Scenario: client makes call to ${eachpath.httpMethod} ${eachpath.path} $eachresponse
+    	Given base url "${eachpath.baseURL}"
+    	And resource path "${eachpath.path}"
+    	And content type "${eachpath.produces}"
+    	And operation "${eachpath.httpMethod}"
+    	And accept type "${eachpath.consumes}"    	 
+    	Then call the service
+    	And validate the http returned status code matches with expected status code "${eachpath.expectedstatuscode}"
+    		
+   	 |baseurl | resource | contenttype | accepttype | operation | expectedstatuscode |
+	 |$eachpath.baseURL | $eachpath.path | $eachpath.produces[0] | $eachpath.consumes[0] | $eachpath.httpMethod | $eachpath.responses[0] |
+	  
+#end 
+#end 
+
+  

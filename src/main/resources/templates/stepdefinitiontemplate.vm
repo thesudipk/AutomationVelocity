@@ -1,0 +1,80 @@
+package com.test.automation.steps;
+
+ 
+
+import static org.junit.Assert.assertEquals;
+
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+public class StepDefinition{
+
+	 
+	String baseurl;
+	String resourcepath;
+	ContentType contenttype;
+	String operation;
+	String accepttype;
+	String payload;
+	Response response;
+	
+	
+	@Given("^base url \"([^\"]*)\"$")
+	public void base_url(String burl) {
+		baseurl = burl;
+	     
+	}
+
+	@Given("^resource path \"([^\"]*)\"$")
+	public void resource_path(String arg1) {
+		resourcepath = arg1;
+	    
+	}
+
+	@Given("^content type \"([^\"]*)\"$")
+	public void content_type(ContentType arg1) {
+	    contenttype = arg1;
+	}
+
+	@Given("^operation \"([^\"]*)\"$")
+	public void operation(String arg1) {
+	    operation = arg1;
+	}
+
+	@Given("^accept type \"([^\"]*)\"$")
+	public void accept_type(String arg1) {
+	     accepttype = arg1;
+	     
+	}
+
+ 
+
+	@Then("^call the service$")
+	public void call_the_service() {
+	    
+		response = callservice();
+	}
+
+	private Response callservice(){
+		
+		RestAssured.baseURI = baseurl;
+		ContentType ctype = contenttype;
+		RequestSpecification reqspec = RestAssured.given().accept(accepttype).contentType(ctype).body(payload);
+		Response response = reqspec.post(resourcepath);
+
+		return response;
+	}
+	
+	@Then("^validate the http returned status code matches with default$")
+	public void validate_the_http_returned_status_code_matches_with(String statuscode) {
+	   
+		String statuscodereturned = String.valueOf(response.getStatusCode());
+		assertEquals(statuscodereturned, statuscode);
+	}
+		
+
+}
